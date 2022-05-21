@@ -78,5 +78,8 @@ def init(
 
 @app.command()
 def start() -> None:
+    """
+    Starts displaying stock quotes.
+    """
     gui = App()
     gui.run()
