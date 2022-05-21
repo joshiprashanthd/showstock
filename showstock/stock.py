@@ -17,4 +17,4 @@ class Stock:
         return f"({self.symbol}): {self.price}"
 
     def __eq__(self, other) -> bool:
-        return self.price == other.price
+        return self.price == other.price and self.symbol == other.symbol
