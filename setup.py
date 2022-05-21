@@ -8,5 +8,5 @@ setup(
     author=__author__,
     packages=["showstock"],
     requires=["requests", "typer", "rich"],
-    entry_points={"console_scripts": ["showstock = showstock.main:main"]} ,
+    entry_points={"console_scripts": ["showstock = showstock.main:main"]},
 )
