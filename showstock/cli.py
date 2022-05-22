@@ -19,27 +19,7 @@ from showstock import (
 )
 from showstock.app import App
 
-
-def _version_callback(value: bool) -> None:
-    if value:
-        typer.secho(f"{__appname__} v{__version__}", fg=typer.colors.BRIGHT_CYAN)
-        raise typer.Exit()
-
-
-def callback(
-    version: Optional[bool] = typer.Option(
-        None,
-        "--version",
-        "-v",
-        help="Show version and exit",
-        callback=_version_callback,
-        is_eager=True,
-    ),
-) -> None:
-    pass
-
-
-app = typer.Typer(callback=callback)
+app = typer.Typer()
 
 
 @app.command()
@@ -76,8 +56,23 @@ def init(
         typer.secho(f"Database Path is {db_path}", fg=typer.colors.GREEN)
 
 
+def _version_callback(value: bool) -> None:
+    if value:
+        typer.secho(f"{__appname__} v{__version__}", fg=typer.colors.BRIGHT_CYAN)
+        raise typer.Exit()
+
+
 @app.callback(invoke_without_command=True)
-def main(ctx: typer.Context) -> None:
+def main(
+    ctx: typer.Context,
+    version: Optional[bool] = typer.Option(
+        None,
+        "--version",
+        "-v",
+        help="Show version and exit",
+        callback=_version_callback,
+    ),
+) -> None:
     """
     Starts displaying stock quotes.
     """
