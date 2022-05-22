@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 from typing import Dict, NamedTuple, Optional, Any
 
+import typer
+
 from showstock import DB_READ_ERROR, DB_WRITE_ERROR, JSON_ERROR, SUCCESS
 
 DEFAULT_DB_FILE_PATH = Path.home().joinpath("." + Path.home().stem + "_showstock.json")
@@ -16,7 +18,7 @@ def get_database_path(config_file: Path) -> Path:
 
 def init_database(db_path: Path) -> int:
     try:
-        db_path.write_text("\{\}")  # Empty to-do list
+        db_path.write_text("{}")  # Empty to-do list
         return SUCCESS
     except OSError:
         return DB_WRITE_ERROR
@@ -32,6 +34,7 @@ class DatabaseHandler:
         self._db_path = db_path
 
     def read(self) -> DBResponse:
+        typer.echo(f"{self._db_path}")
         try:
             with self._db_path.open("r") as db:
                 try:
