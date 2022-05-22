@@ -41,10 +41,10 @@ class DatabaseHandler:
         except OSError:
             return DBResponse(None, DB_READ_ERROR)
 
-    def write(self, dict: Dict[str, Any]) -> DBResponse:
+    def write(self, data: Dict[str, Any]) -> DBResponse:
         try:
             with self._db_path.open("w") as db:
-                json.dump(dict, db, indent=4)
-            return DBResponse(None, SUCCESS)
+                json.dump(data, db, indent=4)
+            return DBResponse(data, SUCCESS)
         except OSError:
-            return DBResponse(None, DB_WRITE_ERROR)
+            return DBResponse(data, DB_WRITE_ERROR)
