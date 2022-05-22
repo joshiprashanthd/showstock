@@ -76,10 +76,11 @@ def init(
         typer.secho(f"Database Path is {db_path}", fg=typer.colors.GREEN)
 
 
-@app.command()
-def start() -> None:
+@app.callback(invoke_without_command=True)
+def main(ctx: typer.Context) -> None:
     """
     Starts displaying stock quotes.
     """
-    gui = App()
-    gui.run()
+    if ctx.invoked_subcommand is None:
+        gui = App()
+        gui.run()
