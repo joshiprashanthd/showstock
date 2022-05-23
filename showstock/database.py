@@ -34,7 +34,6 @@ class DatabaseHandler:
         self._db_path = db_path
 
     def read(self) -> DBResponse:
-        typer.echo(f"{self._db_path}")
         try:
             with self._db_path.open("r") as db:
                 try:
