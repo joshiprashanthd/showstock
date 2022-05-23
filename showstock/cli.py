@@ -17,6 +17,7 @@ from showstock import (
     database,
     config,
 )
+from showstock import controller
 from showstock.app import App
 
 app = typer.Typer()
@@ -56,6 +57,41 @@ def init(
         typer.secho(f"Database Path is {db_path}", fg=typer.colors.GREEN)
 
 
+@app.command()
+def add(
+    symbol: str = typer.Argument(
+        None,
+        help="The symbol to add",
+    ),
+    category: str = typer.Option(
+        "general",
+        "--category",
+        "-c",
+        help="The category to add the symbol to",
+        prompt="Category",
+        is_eager=True,
+    ),
+) -> None:
+
+    """
+    Add a symbol to the database
+    """
+    app_controller = controller.get_controller()
+
+    add_symbol_response = app_controller.add_symbol(symbol, category)
+
+    if add_symbol_response.status != SUCCESS:
+        typer.secho(
+            f"Adding symbol failed with {ERRORS[add_symbol_response.status]}",
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(1)
+
+    typer.secho(
+        f'Added symbol "{symbol}" to category "{category}"', fg=typer.colors.GREEN
+    )
+
+
 def _version_callback(value: bool) -> None:
     if value:
         typer.secho(f"{__appname__} v{__version__}", fg=typer.colors.BRIGHT_CYAN)
@@ -71,6 +107,7 @@ def main(
         "-v",
         help="Show version and exit",
         callback=_version_callback,
+        is_eager=True,
     ),
 ) -> None:
     """
